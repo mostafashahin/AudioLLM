@@ -1,0 +1,72 @@
+{
+  "citation": "",
+  "description": "",
+  "features": {
+    "Unnamed: 0": {
+      "dtype": "int64",
+      "_type": "Value"
+    },
+    "file_path": {
+      "dtype": "string",
+      "_type": "Value"
+    },
+    "file_id": {
+      "dtype": "string",
+      "_type": "Value"
+    },
+    "spk_id": {
+      "dtype": "int64",
+      "_type": "Value"
+    },
+    "prompt_id": {
+      "dtype": "int64",
+      "_type": "Value"
+    },
+    "start_sample": {
+      "dtype": "int64",
+      "_type": "Value"
+    },
+    "end_sample": {
+      "dtype": "int64",
+      "_type": "Value"
+    },
+    "lang": {
+      "dtype": "string",
+      "_type": "Value"
+    },
+    "transcription": {
+      "dtype": "string",
+      "_type": "Value"
+    },
+    "tkdname": {
+      "dtype": "string",
+      "_type": "Value"
+    },
+    "age": {
+      "dtype": "int64",
+      "_type": "Value"
+    },
+    "sex": {
+      "dtype": "string",
+      "_type": "Value"
+    },
+    "mmse": {
+      "dtype": "int64",
+      "_type": "Value"
+    },
+    "dx": {
+      "dtype": "string",
+      "_type": "Value"
+    },
+    "response": {
+      "dtype": "string",
+      "_type": "Value"
+    },
+    "dx_pred": {
+      "dtype": "string",
+      "_type": "Value"
+    }
+  },
+  "homepage": "",
+  "license": ""
+}
