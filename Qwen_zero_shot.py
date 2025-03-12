@@ -1,11 +1,12 @@
 from transformers import Qwen2AudioForConditionalGeneration, AutoProcessor, BitsAndBytesConfig
 from datasets import load_from_disk
 from sklearn.metrics import classification_report
-from sklearn.metrics import classification_report
+from sklearn.metrics import recall_score
 import pandas as pd
 import torch
 import os
 import fire
+
 
 if torch.cuda.is_available():
     device = torch.device('cuda')
@@ -39,14 +40,16 @@ def prompt_with_audio(audio, prompt, model, processor):
     audios = [audio]
     inputs = processor(text=text, audios=audios, return_tensors="pt", padding=True, sampling_rate=16_000).to(device)
     #inputs.input_ids = inputs.input_ids.to("cuda")
-    generate_ids = model.generate(**inputs, max_length=1024)
+    generate_ids = model.generate(**inputs, max_length=2048)
     generate_ids = generate_ids[:, inputs.input_ids.size(1):] # to get only the generated text
     response = processor.batch_decode(generate_ids, skip_special_tokens=True, clean_up_tokenization_spaces=False)[0]
     return response
 
-def detect_CI_batch(batch, prompt, model, processor):
+def detect_CI_batch(batch, prompt, model, processor, debug=False):
     audio = batch['audio']["array"]
     response = prompt_with_audio(audio, prompt, model, processor)
+    if debug:
+        print(response)
     batch['response'] = response
     if "MCI" in response:
         batch['dx_pred'] = "MCI"
@@ -64,7 +67,7 @@ def load_prompts(prompts_file):
         prompts = f.read().splitlines()
     return prompts
 
-def process_data(dataset_path, prompts_file, output_dir):
+def process_data(dataset_path, prompts_file, output_dir, debug=False):
     create_directory_if_not_exists(output_dir)
     csv_file = os.path.join(output_dir, "results.csv")
     pred_dataset_path = os.path.join(output_dir, "pred_dataset")
@@ -83,7 +86,7 @@ def process_data(dataset_path, prompts_file, output_dir):
     for i in range(len(prompts)):
         prompt = prompts[i]
         print(prompt)
-        data_pred = data.map(detect_CI_batch, fn_kwargs={'prompt': prompt,'model':model, 'processor':processor});
+        data_pred = data.map(detect_CI_batch, fn_kwargs={'prompt': prompt,'model':model, 'processor':processor, 'debug':debug});
         #pred_dataset.append(deepcopy(data_pred))
         data_pred.remove_columns(['audio']).save_to_disk(os.path.join(pred_dataset_path,f'data_prompt_{i}'))
         results_d = get_class_results(data_pred, 'dx','dx_pred')
@@ -96,6 +99,7 @@ def process_data(dataset_path, prompts_file, output_dir):
                        "NC_precision":results_d["NC"]["precision"],
                        "NC_f1-score":results_d["NC"]["f1-score"],
                        "NC_support":results_d["NC"]["support"],
+                       "UAR":results_d['macro avg']['recall'],
                        "f1_score_macro":results_d['macro avg']['f1-score'],
                        "f1_score_weighted":results_d['weighted avg']['f1-score']})
     df = pd.DataFrame.from_records(results)
