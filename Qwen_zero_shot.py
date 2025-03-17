@@ -78,7 +78,7 @@ def load_prompts(prompts_file):
         prompts = f.read().splitlines()
     return prompts
 
-def process_data(dataset_path, prompts_file, output_dir, debug=False):
+def process_data(dataset_path, prompts_file, output_dir, quantize=True, debug=False):
     create_directory_if_not_exists(output_dir)
     csv_file = os.path.join(output_dir, "results.csv")
     pred_dataset_path = os.path.join(output_dir, "pred_dataset")
@@ -87,7 +87,10 @@ def process_data(dataset_path, prompts_file, output_dir, debug=False):
     #Loading the model
     quantization_config = BitsAndBytesConfig(load_in_8bit=True)
     processor = AutoProcessor.from_pretrained("Qwen/Qwen2-Audio-7B-Instruct")
-    model = Qwen2AudioForConditionalGeneration.from_pretrained("Qwen/Qwen2-Audio-7B-Instruct", quantization_config=quantization_config, device_map=device)
+    if quantize:
+        model = Qwen2AudioForConditionalGeneration.from_pretrained("Qwen/Qwen2-Audio-7B-Instruct", quantization_config=quantization_config, device_map=device)
+    else:
+        model = Qwen2AudioForConditionalGeneration.from_pretrained("Qwen/Qwen2-Audio-7B-Instruct", device_map=device)
     model.tie_weights()
     print(f"Model loaded to device {model.device}")
     data = load_from_disk(dataset_path)
