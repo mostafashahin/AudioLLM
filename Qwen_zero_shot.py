@@ -13,6 +13,8 @@ if torch.cuda.is_available():
 else:
     device = torch.device('cpu')
 
+gender_map = {'M':'male','F':'female'}
+
 def create_directory_if_not_exists(directory_path):
     """Creates a directory if it does not already exist.
 
@@ -47,6 +49,15 @@ def prompt_with_audio(audio, prompt, model, processor):
 
 def detect_CI_batch(batch, prompt, model, processor, debug=False):
     audio = batch['audio']["array"]
+    
+    if '[AGE]' in prompt:
+        prompt = prompt.replace('[AGE]',str(batch['age']))
+    if '[LANGUAGE]' in prompt:
+        prompt = prompt.replace('[LANGUAGE]',batch['lang'])
+    if '[GENDER]' in prompt:
+        prompt = prompt.replace('[GENDER]', gender_map[batch['sex']])
+    batch['prompt'] = prompt
+    
     response = prompt_with_audio(audio, prompt, model, processor)
     if debug:
         print(response)

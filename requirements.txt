@@ -7,3 +7,4 @@ fire
 scikit-learn
 librosa
 accelerate>=0.26.0
+bitsandbytes
