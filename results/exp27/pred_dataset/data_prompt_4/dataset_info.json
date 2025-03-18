@@ -1,0 +1,44 @@
+{
+  "citation": "",
+  "description": "",
+  "features": {
+    "age": {
+      "dtype": "int64",
+      "_type": "Value"
+    },
+    "sex": {
+      "dtype": "string",
+      "_type": "Value"
+    },
+    "mmse": {
+      "dtype": "int64",
+      "_type": "Value"
+    },
+    "dx": {
+      "dtype": "string",
+      "_type": "Value"
+    },
+    "tkdname": {
+      "dtype": "string",
+      "_type": "Value"
+    },
+    "lang": {
+      "dtype": "string",
+      "_type": "Value"
+    },
+    "prompt": {
+      "dtype": "string",
+      "_type": "Value"
+    },
+    "response": {
+      "dtype": "string",
+      "_type": "Value"
+    },
+    "dx_pred": {
+      "dtype": "string",
+      "_type": "Value"
+    }
+  },
+  "homepage": "",
+  "license": ""
+}
