@@ -82,7 +82,7 @@ def load_prompts(prompts_file):
         prompts = f.read().splitlines()
     return prompts
 
-def process_data(dataset_path, prompts_file, output_dir, quantize=True, debug=False, n_classes=2, ci=False):
+def process_data(dataset_path, prompts_file, output_dir, quantize=True, debug=False, n_classes=2, ci=False, task=None):
     create_directory_if_not_exists(output_dir)
     csv_file = os.path.join(output_dir, "results.csv")
     pred_dataset_path = os.path.join(output_dir, "pred_dataset")
@@ -98,6 +98,8 @@ def process_data(dataset_path, prompts_file, output_dir, quantize=True, debug=Fa
     model.tie_weights()
     print(f"Model loaded to device {model.device}")
     data = load_from_disk(dataset_path)
+    if task:
+        data = data.filter(lambda x:x['type']==task)
     prompts = load_prompts(prompts_file)
     results = []
     #pred_dataset = []
