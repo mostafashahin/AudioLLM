@@ -106,7 +106,7 @@ def process_data(dataset_path, prompts_file, output_dir, quantize=True, debug=Fa
         #pred_dataset.append(deepcopy(data_pred))
         data_pred.remove_columns(['audio']).save_to_disk(os.path.join(pred_dataset_path,f'data_prompt_{i}'))
         results_d = get_class_results(data_pred, 'dx','dx_pred')
-        if n_class == 2:
+        if n_classes == 2:
             results.append({"prompt":prompt, 
                             "MCI_recall":results_d["MCI"]["recall"],
                            "MCI_precision":results_d["MCI"]["precision"],
@@ -119,7 +119,7 @@ def process_data(dataset_path, prompts_file, output_dir, quantize=True, debug=Fa
                            "UAR":results_d['macro avg']['recall'],
                            "f1_score_macro":results_d['macro avg']['f1-score'],
                            "f1_score_weighted":results_d['weighted avg']['f1-score']})
-        elif n_class == 3:
+        elif n_classes == 3:
             results.append({"prompt":prompt, 
                             "MCI_recall":results_d["MCI"]["recall"],
                            "MCI_precision":results_d["MCI"]["precision"],
