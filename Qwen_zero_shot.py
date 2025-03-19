@@ -66,6 +66,8 @@ def detect_CI_batch(batch, prompt, model, processor, debug=False):
         batch['dx_pred'] = "MCI"
     elif "NC" in response:
         batch['dx_pred'] = "NC"
+    elif "DM" in response:
+        batch['dx_pred'] = "DM"
     else:
         batch['dx_pred'] = "Unknown"
     return batch
@@ -78,7 +80,7 @@ def load_prompts(prompts_file):
         prompts = f.read().splitlines()
     return prompts
 
-def process_data(dataset_path, prompts_file, output_dir, quantize=True, debug=False):
+def process_data(dataset_path, prompts_file, output_dir, quantize=True, debug=False, n_classes=2):
     create_directory_if_not_exists(output_dir)
     csv_file = os.path.join(output_dir, "results.csv")
     pred_dataset_path = os.path.join(output_dir, "pred_dataset")
@@ -104,18 +106,43 @@ def process_data(dataset_path, prompts_file, output_dir, quantize=True, debug=Fa
         #pred_dataset.append(deepcopy(data_pred))
         data_pred.remove_columns(['audio']).save_to_disk(os.path.join(pred_dataset_path,f'data_prompt_{i}'))
         results_d = get_class_results(data_pred, 'dx','dx_pred')
-        results.append({"prompt":prompt, 
-                        "MCI_recall":results_d["MCI"]["recall"],
-                       "MCI_precision":results_d["MCI"]["precision"],
-                       "MCI_f1-score":results_d["MCI"]["f1-score"],
-                       "MCI_support":results_d["MCI"]["support"],
-                       "NC_recall":results_d["NC"]["recall"],
-                       "NC_precision":results_d["NC"]["precision"],
-                       "NC_f1-score":results_d["NC"]["f1-score"],
-                       "NC_support":results_d["NC"]["support"],
-                       "UAR":results_d['macro avg']['recall'],
-                       "f1_score_macro":results_d['macro avg']['f1-score'],
-                       "f1_score_weighted":results_d['weighted avg']['f1-score']})
+        if n_class == 2:
+            results.append({"prompt":prompt, 
+                            "MCI_recall":results_d["MCI"]["recall"],
+                           "MCI_precision":results_d["MCI"]["precision"],
+                           "MCI_f1-score":results_d["MCI"]["f1-score"],
+                           "MCI_support":results_d["MCI"]["support"],
+                           "NC_recall":results_d["NC"]["recall"],
+                           "NC_precision":results_d["NC"]["precision"],
+                           "NC_f1-score":results_d["NC"]["f1-score"],
+                           "NC_support":results_d["NC"]["support"],
+                           "UAR":results_d['macro avg']['recall'],
+                           "f1_score_macro":results_d['macro avg']['f1-score'],
+                           "f1_score_weighted":results_d['weighted avg']['f1-score']})
+        elif n_class == 3:
+            results.append({"prompt":prompt, 
+                            "MCI_recall":results_d["MCI"]["recall"],
+                           "MCI_precision":results_d["MCI"]["precision"],
+                           "MCI_f1-score":results_d["MCI"]["f1-score"],
+                           "MCI_support":results_d["MCI"]["support"],
+                           "NC_recall":results_d["NC"]["recall"],
+                           "NC_precision":results_d["NC"]["precision"],
+                           "NC_f1-score":results_d["NC"]["f1-score"],
+                           "NC_support":results_d["NC"]["support"],
+                           "DM_recall":results_d["DM"]["recall"],
+                           "DM_precision":results_d["DM"]["precision"],
+                           "DM_f1-score":results_d["DM"]["f1-score"],
+                           "DM_support":results_d["DM"]["support"],
+                           "UAR":results_d['macro avg']['recall'],
+                           "f1_score_macro":results_d['macro avg']['f1-score'],
+                           "f1_score_weighted":results_d['weighted avg']['f1-score']})
+        else:
+            results.append({"prompt":prompt,
+                           "UAR":results_d['macro avg']['recall'],
+                           "f1_score_macro":results_d['macro avg']['f1-score'],
+                           "f1_score_weighted":results_d['weighted avg']['f1-score']})
+            
+            
     df = pd.DataFrame.from_records(results)
     df.to_csv(csv_file)
     
