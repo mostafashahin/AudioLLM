@@ -110,6 +110,10 @@ def process_data(dataset_path, prompts_file, output_dir, quantize=True, debug=Fa
         #pred_dataset.append(deepcopy(data_pred))
         data_pred.remove_columns(['audio']).save_to_disk(os.path.join(pred_dataset_path,f'data_prompt_{i}'))
         results_d = get_class_results(data_pred, 'dx','dx_pred')
+        if "Unknown" in results_d:
+            n_unkowns = results_d["Unknown"]["support"]
+        else:
+            n_unkowns = 0
         if n_classes == 2 and not ci:
             results.append({"prompt":prompt, 
                             "MCI_recall":results_d["MCI"]["recall"],
@@ -120,6 +124,7 @@ def process_data(dataset_path, prompts_file, output_dir, quantize=True, debug=Fa
                            "NC_precision":results_d["NC"]["precision"],
                            "NC_f1-score":results_d["NC"]["f1-score"],
                            "NC_support":results_d["NC"]["support"],
+                            "Unknown":n_unkowns,
                            "UAR":results_d['macro avg']['recall'],
                            "f1_score_macro":results_d['macro avg']['f1-score'],
                            "f1_score_weighted":results_d['weighted avg']['f1-score']})
@@ -133,6 +138,7 @@ def process_data(dataset_path, prompts_file, output_dir, quantize=True, debug=Fa
                            "NC_precision":results_d["NC"]["precision"],
                            "NC_f1-score":results_d["NC"]["f1-score"],
                            "NC_support":results_d["NC"]["support"],
+                            "Unknown":n_unkowns,
                            "UAR":results_d['macro avg']['recall'],
                            "f1_score_macro":results_d['macro avg']['f1-score'],
                            "f1_score_weighted":results_d['weighted avg']['f1-score']})
@@ -150,6 +156,7 @@ def process_data(dataset_path, prompts_file, output_dir, quantize=True, debug=Fa
                            "DM_precision":results_d["DM"]["precision"],
                            "DM_f1-score":results_d["DM"]["f1-score"],
                            "DM_support":results_d["DM"]["support"],
+                            "Unknown":n_unkowns,
                            "UAR":results_d['macro avg']['recall'],
                            "f1_score_macro":results_d['macro avg']['f1-score'],
                            "f1_score_weighted":results_d['weighted avg']['f1-score']})
