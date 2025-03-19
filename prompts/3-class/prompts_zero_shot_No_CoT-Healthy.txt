@@ -1,0 +1,6 @@
+Analyze the input audio and determine the diagnosis. Select from the following options: NC for Healthy, MCI for Mild Cognitive Impairment or DM for Dementia. Provide your response as a single word: NC, MCI or DM.
+Listen to the provided audio and classify the cognitive condition. Choose either NC for Healthy, MCI for Mild Cognitive Impairment or DM for Dementia. Respond with only one word: NC, MCI or DM.
+Based on the speech patterns in the input audio, identify the cognitive status. Use NC for Healthy, MCI for Mild Cognitive Impairment, or DM for Dementia. Your response should be a single word: NC, MCI or DM.
+From the given speech sample, determine the cognitive condition. Select one of the following labels: NC for Healthy, MCI for Mild Cognitive Impairment, DM for Dementia. Reply with only one word: NC, MCI or DM
+Assess the cognitive condition based on the input audio. Indicate the diagnosis using one of these labels: NC for Healthy, MCI for Mild Cognitive Impairment or DM for Dementia. Output only NC, MCI or DM as your response.
+Based on the input audio, indicate only the diagnosis. Choose from: Healthy, Mild Cognitive Impairment or Dementia. Give the answer as a single word. Use NC for Healthy, MCI for Mild Cognitive Impairment and DM for Dementia.

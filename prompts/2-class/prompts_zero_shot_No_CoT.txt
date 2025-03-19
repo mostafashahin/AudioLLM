@@ -1,0 +1,6 @@
+Analyze the input audio and determine the diagnosis. Select from the following options: NC for Normal Cognitive Decline or CI for Cognitive Impairment. Provide your response as a single word: NC or CI.
+Listen to the provided audio and classify the cognitive condition. Choose either NC for Normal Cognitive Decline or CI for Cognitive Impairment. Respond with only one word: NC or CI.
+Based on the speech patterns in the input audio, identify the cognitive status. Use NC for Normal Cognitive Decline or CI for Cognitive Impairment. Your response should be a single word: NC or CI.
+From the given speech sample, determine the cognitive condition. Select one of the following labels: NC for Normal Cognitive Decline or CI for Cognitive Impairment. Reply with only one word: NC or CI
+Assess the cognitive condition based on the input audio. Indicate the diagnosis using one of these labels: NC for Normal Cognitive Decline or CI for Cognitive Impairment. Output only NC or CI as your response.
+Based on the input audio, indicate only the diagnosis. Choose from: Normal Cognitive Decline or Cognitive Impairment. Give the answer as a single word. Use NC for Normal Cognitive Decline and CI for Cognitive Impairment.
