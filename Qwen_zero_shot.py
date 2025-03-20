@@ -55,7 +55,7 @@ def detect_CI_batch(batch, prompt, model, processor, debug=False):
     if '[LANGUAGE]' in prompt:
         prompt = prompt.replace('[LANGUAGE]',batch['lang'])
     if '[GENDER]' in prompt:
-        prompt = prompt.replace('[GENDER]', gender_map[batch['sex']])
+        prompt = prompt.replace('[GENDER]', gender_map.get(batch['sex'],batch['sex']))
     batch['prompt'] = prompt
     
     response = prompt_with_audio(audio, prompt, model, processor)
@@ -66,7 +66,7 @@ def detect_CI_batch(batch, prompt, model, processor, debug=False):
         batch['dx_pred'] = "MCI"
     elif "NC" in response:
         batch['dx_pred'] = "NC"
-    elif "DM" in response:
+    elif "DM" in response or "deme" in response.lower():
         batch['dx_pred'] = "DM"
     elif "CI" in response:
         batch['dx_pred'] = "CI"
